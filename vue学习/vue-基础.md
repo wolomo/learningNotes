@@ -599,6 +599,32 @@ Vue.component('button-counter', {
 
 为了能在模板中使用，这些组件必须先注册以便 Vue 能够识别。这里有两种组件的注册类型：**全局注册**和**局部注册**。
 
+> 可以先创建模板对象
+>
+> ```
+> 方式一
+> var mycom = {
+>     template:'<p>123</p>'
+> }
+> 方式二
+> <template id="tmp1">
+> 	<div>1213</div>
+> </template>
+> var mycom = {
+>     template:'#tmp1'
+> }
+> ```
+
+> 可以使用es6语法
+>
+> compontents:{
+>
+> ​	login
+>
+> }
+
+
+
 + 全局注册
 
 ```
@@ -618,18 +644,411 @@ var vm = new Vue({
 })
 ```
 
-#### 4.props向子组件传递数据
+####组件获取dom元素以及组件的引用【ref】
 
-```vue
+```
+<div id="app">
+	<h3 ref="myh3">121212</h3>
+	<mylogin ref="mylogin">121212</mylogin>
+</div>
+var vm = new Vue({
+    el:'#app',
+    data:{},
+    methods:{
+        show(data){
+            console.log(this.$refs.myh3.innerTest)
+            console.log(this.$refs.mylogin.data)
+        }
+    },
+    components:{
+        mycom
+    }   
+})
+```
+
+
+
+### 八.父子组件通信
+
+####1.父组件向子组件传递数据【props】
+
+> props数据都是只读的
+
+```
 <template>
-	<blog-post title="My journey with Vue"></blog-post>
-	<blog-post title="Blogging with Vue"></blog-post>
-	<blog-post title="Why Vue is so fun"></blog-post>
+	<blog-post title="hasaki"></blog-post>
+	<blog-post title="hello "></blog-post>
+	<blog-post title="Why  Vue is so fun"></blog-post>
 </template>
-通过props,将父组件中的title属性的值,传递给子组件
+//通过props,将父组件中的title属性的值,传递给子组件
+//**也可以使用v-bind绑定自定义属性**//
 Vue.component('blog-post', {
   props: ['title'],
   template: '<h3>{{ title }}</h3>'
 })
+```
+
+ #### 2.父组件传递方法给子组件【$emit】
+
+```
+<mycom @func123="show"></mycom>
+
+<template id="tmp1">
+	<div>子组件z</div>
+	<input type='button' value='子组件按钮' @click='myclick'>
+</template>
+
+var mycom = {
+    template:'#tmp1',
+    methods:{
+        myclick(){
+            this.$emit('func123',data) 
+        }
+    }
+}
+
+var vm = new Vue({
+    el:'#app',
+    data:{},
+    methods:{
+        show(data){
+            console.log('调用了父组件show方法'+data)
+        }
+    },
+    components:{
+        mycom
+    }   
+})
+
+```
+
+####3.子组件传递数据给父组件【$emit】
+
+```
+<div>
+	<mycom @func123="show"></mycom>
+	<p>{{dataformSon}}</p>
+</div>
+
+
+<template id="tmp1">
+	<div>子组件z</div>
+	<input type='text' v-model="data">
+	<input type='button' value='子组件按钮' @click='myclick'>
+</template>
+
+var mycom = {
+    template:'#tmp1',
+    data(){
+        return{
+            data:data
+        }
+    }
+    methods:{
+        myclick(){
+            this.$emit('func123',data) 
+        }
+    }
+}
+
+var vm = new Vue({
+    el:'#app',
+    data:{
+        dataformSon=''
+    },
+    methods:{
+        show(data){
+            dataformSon = data
+        }
+    },
+    components:{
+        mycom
+    }   
+})
+```
+
+### 九.路由
+
+>后端路由：URL对应服务器上对应的资源
+>
+>前端路由：主要是通过URL中的hash（#），实现不同页面之间的跳转
+
+#### 1.安装和配置
+
++ 下载使用
+
+下载地址`<https://unpkg.com/vue-router/dist/vue-router.js>`
+
+```
+<script src="/path/to/vue.js"></script>
+<script src="/path/to/vue-router.js"></script>
+
+```
+
++ npm使用
+
+```
+#NPM
+npm install vue-router
+
+//如果在一个模块化工程中使用它，必须要通过 Vue.use() 明确地安装路由功能：
+
+import Vue from 'vue'
+import VueRouter from 'vue-router'
+
+Vue.use(VueRouter)
+```
+
+#### 2.使用
+
+```
+    <div id="app" v-cloak>
+<!--        <a href="#/login">login</a>-->
+<!--        <a href="#/register">register</a>-->
+        <router-link to="/login">login</router-link>
+        <router-link to="/register">register</router-link>
+
+        <router-view></router-view>
+    </div>
+
+    <script src="node_modules/vue/dist/vue.js"></script>
+    <script src="https://unpkg.com/vue-router@3.0.6/dist/vue-router.js"></script>
+    <script>
+
+
+        var login = {
+            template:'<h1>登录组件</h1>>'
+        }
+        var register = {
+            template:'<h1>注册组件</h1>>'
+        }
+        /*
+        * 创建路由对象
+        * */
+        var routerObj = new VueRouter({
+            /*
+            * 路由匹配规则，有两个必须的属性：
+            *   path：监听那个路由；链接地址；
+            *   component：表示如果路由匹配到path，显示的组件（组件值必须是一个组件的模板对象，不能是模板的引用类型）
+            * */
+            routes:[
+                {path:'/',redirect:""},
+                {path:'/login',component:login},
+                {path:'/register',component:register}
+            ]
+        })
+        var app=new Vue({
+            el:"#app",
+            /*注册路由组件*/
+            router:routerObj
+        })
+    </script>
+```
+
+> 改变点击url的样式
+>
+> 1.修改默认的css类
+>
+> .router-link-active{
+>
+> ​	...
+>
+> ​	...
+>
+> }
+>
+> 2.配置路由对象
+>
+> 
+
+##### 改变点击url的样式
+
++ 1.修改默认的css类
+
+```
+.router-link-active{
+
+	...
+
+	...
+
+}
+```
+
++ 配置路由对象
+
+```
+ var routerObj = new VueRouter({
+            /*
+            * 路由匹配规则，有两个必须的属性：
+            *   path：监听那个路由；链接地址；
+            *   component：表示如果路由匹配到path，显示的组件（组件值必须是一个组件的模板对象，不能是模板的引用类型）
+            * */
+       	routes:[
+                {path:'/',redirect:""},
+                {path:'/login',component:login},
+                {path:'/register',component:register}
+            ],
+		linkAcyiveClass:'myactive'
+})
+        
+.myactive{
+
+	...
+
+	...
+
+}
+```
+
+
+
+##### 得到url的参数
+
+> 方法一：get
+
+```
+<div id="app" v-cloak>
+        <router-link to="/login?id=10">login</router-link>
+        <router-link to="/register?id=15">register</router-link>
+
+        <router-view></router-view>
+    </div>
+
+
+//$routed对象可以得到url
+        var login = {
+            template:'<h1>登录组件======{{$route.query.id}}</h1>',
+
+        }
+        var register = {
+            template:'<h1>注册组件======{{$route.query.id}}</h1>'
+        }
+```
+
+> 方法二:占位符
+
+```
+<div id="app" v-cloak>
+        <router-link to="/login/10/wolomo">login</router-link>
+        <router-link to="/register/20/wolomo00">register</router-link>
+
+        <router-view></router-view>
+    </div>
+
+    <script src="node_modules/vue/dist/vue.js"></script>
+    <script src="https://unpkg.com/vue-router@3.0.6/dist/vue-router.js"></script>
+    <script>
+        var login = {
+            template:'<h1>登录组件======{{$route.params.id}}====={{$route.params.name}}</h1>',
+
+        }
+        var register = {
+            template:'<h1>注册组件======{{$route.params.id}}====={{$route.params.name}}</h1>'
+        }
+        var routerObj = new VueRouter({
+
+            routes:[
+                {path:'/',redirect:""},
+                {path:'/login/:id/:name',component:login},
+                {path:'/register/:id/:name',component:register}
+            ]
+        })
+        var app=new Vue({
+            el:"#app",
+            /*注册路由组件*/
+            router:routerObj
+        })
+    </script>
+```
+
+####3.路由的嵌套
+
+ ```
+<div id="app" v-cloak>
+    <router-link to="/account">account</router-link>
+    <router-view></router-view>
+</div>
+<template id="tmp1">
+    <div>
+        <div>这是account组件</div>
+        <router-link to="/account/login">login</router-link>
+        <router-link to="/account/register">register</router-link>
+        <router-view></router-view>
+    </div>
+</template>
+<script src="node_modules/vue/dist/vue.js"></script>
+<script src="https://unpkg.com/vue-router@3.0.6/dist/vue-router.js"></script>
+<script>
+    var account = {
+        template: '#tmp1',
+    }
+    //$routed对象可以得到url
+    var login = {
+        template: '<h1>登录组件===========</h1>'
+    }
+    var register = {
+        template: '<h1>注册组件===========</h1>'
+    }
+    /*
+    * 创建路由对象
+    * */
+    var routerObj = new VueRouter({
+        routes: [
+            {
+                path: '/account',
+                component: account,
+                children:[
+                    // 如果加了斜线，则以根目录路由
+                    {path: 'login',component: login},
+                    {path: 'register',component: register},
+                ]
+            }
+        ]
+    })
+    var app = new Vue({
+        el: "#app",
+        /*注册路由组件*/
+        router: routerObj
+    })
+</script>
+ ```
+
+#### 4.命名视图
+
+```
+<div id="app">
+        <router-view></router-view>
+        <router-view name="left"></router-view>
+        <router-view name="main"></router-view>
+    </div>
+    <script src="node_modules/vue/dist/vue.js"></script>
+    <script src="https://unpkg.com/vue-router@3.0.6/dist/vue-router.js"></script>
+    <script>
+        var header = {
+            template: '<h1 class="header">Header头部区域</h1>'
+        }
+        var leftBox = {
+            template: '<h1>Left侧边栏区域</h1>'
+        }
+        var mainBox = {
+            template: '<h1 class="main">mainBox主体区域</h1>'
+        }
+        var routerObj = new VueRouter({
+            routes:[
+                {
+                    path: '/', components: {
+                        'default': header,
+                        'left': leftBox,
+                        'main': mainBox
+                    }
+                }
+            ]
+        })
+        var app=new Vue({
+            el:"#app",
+            router:routerObj
+        })
+    </script>
 ```
 
