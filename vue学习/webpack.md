@@ -33,7 +33,7 @@ Image
 
 > 官网 <https://webpack.js.org/>
 
-+++
+++++++++++
 
 ### 安装的插件列表
 
@@ -46,7 +46,7 @@ Image
 + npm i node-sass  sass-loader  --save-dev //加载scss(sass)样式的插件
 + ​
 
-+++
+++++++++++++++
 
 
 
@@ -54,7 +54,7 @@ Image
 
 
 
-###一.安装和使用
+### 一.安装和使用
 
 #### 1.安装
 
@@ -92,7 +92,7 @@ webpack-demo
 
 ```
 
-####3.基本demo
+#### 3.基本demo
 
 ##### webpack-config.js的配置
 
@@ -184,7 +184,7 @@ $(function () {
 })
 ```
 
-#####index.html配置
+##### index.html配置
 
 ```
 <!doctype html>
