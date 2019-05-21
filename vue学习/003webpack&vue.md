@@ -12,7 +12,7 @@
 
 
 
-###一.webpack&vue
+### 一.webpack&vue
 
 #### 1.安装
 
@@ -48,7 +48,7 @@ webpack-demo
 
 ```
 
-####3.基本demo
+#### 3.基本demo
 
 ##### webpack-config.js的配置
 
@@ -90,7 +90,7 @@ var vm = new Vue({
 })
 ```
 
-#####index.html配置
+##### index.html配置
 
 ```
 <body>
@@ -99,7 +99,7 @@ var vm = new Vue({
 </body>
 ```
 
-#####login.vue
+##### login.vue
 
 ```
 <template>
@@ -124,7 +124,7 @@ var vm = new Vue({
 </script>
 ```
 
-####复习
+#### 复习
 
 ##### 包的查找规则
 
@@ -301,7 +301,7 @@ var vm = new Vue({
 ```
 #### 4.路由嵌套
 
-#####目录结构
+##### 目录结构
 
 ```
 webpack-demo
@@ -343,7 +343,7 @@ webpack-demo
 |- webpack.config.js
 
 ```
-#####login.vue
+##### login.vue
 
 ```
 <template>
@@ -382,7 +382,7 @@ webpack-demo
 
 
 ```
-#####main.js
+##### main.js
 
 ```
 import Vue from 'vue'
@@ -433,7 +433,7 @@ var vm = new Vue({
     router
 })
 ```
-####5.抽离路由模块
+#### 5.抽离路由模块
 
 ##### 在src下面创建router.js
 
