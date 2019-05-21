@@ -1,6 +1,6 @@
 # webpack&vue
 
-+++
++++++++++++++++
 
 ### 安装的插件列表
 
@@ -8,7 +8,7 @@
 + npm install vue-loader  vue-template-compiler --save-dev    //vue loader
 + npm install vue-router --save-dev    //vue-router路由包
 
-+++
++++++++++++++++++++++
 
 
 
@@ -18,8 +18,6 @@
 
 > - npm install vue --save-dev    //vue
 > - npm install vue-loader  vue-template-compiler --save-dev     //vue loader
-
-
 
 #### 2.文档结构
 
@@ -107,7 +105,6 @@ var vm = new Vue({
         <p>大声道 {{msg}}</p>
     </div>
 </template>
-
 <script>
     export default {
         data(){
@@ -138,7 +135,6 @@ var vm = new Vue({
 ##### 向外暴露成员变量的方法
 
 + Node
-
   ```
   //导出
   module.exports ={}
@@ -147,7 +143,6 @@ var vm = new Vue({
   ```
 
 + ES6
-
   ```
   //导出对象(只能导出一次)
   export default{
@@ -169,8 +164,7 @@ var vm = new Vue({
     console.log(title)
 
     console.log(view)
-
-
+  
   ```
 
 
@@ -178,36 +172,28 @@ var vm = new Vue({
 
 #### 1.安装
 
-  ```
+```
 npm install vue-router --save-dev    //vue-router包
-  ```
+```
 #### 2.结构目录
 
 ```
 webpack-demo
-
 |- /dist
-
     |- boudle.js
-
 |- /node-modeles
-
 |- /src
-
     |- /components
     	|- /login
     		|- login.vue
     	|- /
     		|- register.vue
     |- index.html
-    
-    |-main.js
-    
+    |-main.js    
     |-app.vue
-
 |- package.json
-
 |- webpack.config.js
+
 ```
 #### 3.配置
 
@@ -248,12 +234,9 @@ webpack-demo
 </body>
 </html>
 
-
 ```
 **main.js**
 ```
-
-
 // 导包
 
 import Vue from 'vue'
@@ -275,11 +258,11 @@ import register from './register/register.vue'
 var router = new VueRouter({
 
     routes: [
-
+    
         {path: '/login', component: login},
-
+    
         {path: '/register', component: register},
-
+    
     ]
 
 })
@@ -287,13 +270,13 @@ var router = new VueRouter({
 var vm = new Vue({
 
     el: "#app",
-
+    
     // 将app组件导入到html
-
+    
     render: createElement => createElement(app),
-
+    
     // 将路由挂载到vm下
-
+    
     router
 
 })
@@ -315,27 +298,27 @@ webpack-demo
 |- /src
 
 	|- /components
-
+	
 		|- /login
-
+	
 			|- /name
-
+	
 				|- name.vue
-
+	
 			|- /age
-
+	
 				|- age.vue
-
+	
 			|- login.vue
-
+	
 		|- /
-
+	
 			|- register.vue
-
+	
 	|- index.html
-
+	
 	|-main.js
-
+	
 	|-app.vue
 
 |- package.json
@@ -349,41 +332,37 @@ webpack-demo
 <template>
 
     <div class="login">
-
+    
         <h1>login {{msg}}</h1>
-
+    
         <router-link to="/login/name">name</router-link>
-
+    
         <router-link to="/login/age">age</router-link>
-
+    
         <router-view></router-view>
-
+    
     </div>
 
 </template>
-
 <script>
 
     export default {
-
+    
         data(){
-
+    
             return{
-
+    
                 msg:"123"
-
+    
             }
-
+    
         },
-
+    
     };
 
 </script>
-
-
 ```
 ##### main.js
-
 ```
 import Vue from 'vue'
 
@@ -404,25 +383,25 @@ import name from './login/name/name.vue'
 var router = new VueRouter({
 
     routes: [
-
+    
         {
-
+    
             path: '/login',
-
+    
             component: login,
-
+    
             children:[
-
+    
                 {path: 'age', component: age},
-
+    
                 {path: 'name', component: name},
-
+    
             ]
-
+    
         },
-
+    
         {path: '/register', component: register},
-
+    
     ]
 
 })
@@ -509,4 +488,3 @@ scoped  是给template 下面的div添加自定义的样式
     }
 </style>
 ```
-
